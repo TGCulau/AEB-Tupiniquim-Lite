@@ -5,93 +5,25 @@
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            int continput = 0, areax = 0, areay = 0;
-            string input = "";
-            while (true)
-            {
-                //5 5
-                input = Console.ReadLine();
-                continput = 0;
-                areax = 0;
-                areay = 0;
-                foreach (char separacao in input)
-                {
-                    if (separacao != ' ')
-                    {
-                        continput++;
-                        if (continput == 1)
-                        {
-                            short auxconversao1;
-                            Int16.TryParse(separacao.ToString(), out auxconversao1);
-                            areax = auxconversao1;
-                        }
-                        if (continput == 2)
-                        {
-                            short auxconversao2;
-                            Int16.TryParse(separacao.ToString(), out auxconversao2);
-                            areay = auxconversao2;
-                        }
-                    }
-                }
-                if (areay < 0 || areax < 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Erro");
-                    continue;
-                }
-                break;
-            }
-            int posx = 0, posy = 0;
-            string cardeal = "";
-            while (true)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                //1 2 N
-                input = Console.ReadLine();
-                continput = 0;
-                foreach (char separacao in input)
-                {
-                    if (separacao != ' ')
-                    {
-                        continput++;
-                        if (continput == 1)
-                        {
-                            short auxconversao1;
-                            Int16.TryParse(separacao.ToString(), out auxconversao1);
-                            posx = auxconversao1;
-                        }
-                        if (continput == 2)
-                        {
-                            short auxconversao2;
-                            Int16.TryParse(separacao.ToString(), out auxconversao2);
-                            posy = auxconversao2;
-                        }
-                        if (continput == 3)
-                        {
-                            cardeal = Convert.ToString(separacao);
-                        }
-                    }
-                }
-                if (posx > areax)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Erro");
-                    continue;
-                }
-                if (posy > areay)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Erro");
-                    continue;
-                }
-                if (cardeal != "N" && cardeal != "n" && cardeal != "S" && cardeal != "s" && cardeal != "L" && cardeal != "l" && cardeal != "O" && cardeal != "o" && cardeal == " " && cardeal == "")
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("Erro");
-                    continue;
-                }
-                break;
-            }
+
+            (int areax, int areay) = InputArea();
+            (int posx, int posy, string cardeal) = InputPosicao(areax, areay);
+            (posx, posy, cardeal) = Comando(areax, areay, posx, posy, cardeal);
+            string resultado1 = $"{posx} {posy} {cardeal}";
+
+            (posx, posy, cardeal) = InputPosicao(areax, areay);
+            (posx, posy, cardeal) = Comando(areax, areay, posx, posy, cardeal);
+            string resultado2 = $"{posx} {posy} {cardeal}";
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Clear();
+            Console.WriteLine(resultado1);
+            Console.WriteLine(resultado2);
+            Console.ReadLine();
+        }
+
+        public static (int, int, string) Comando(int areax, int areay, int posx, int posy, string cardeal)
+        {
             string frasecomando = "";
             while (true)
             {
@@ -190,16 +122,17 @@
                 }
                 break;
             }
+            return (posx, posy, cardeal);
+        }
 
-
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            int posx2 = 0, posy2 = 0;
-            string cardeal2 = "";
+        public static (int, int, string) InputPosicao(int areax, int areay)
+        {
+            int continput = 0, posx = 0, posy = 0;
+            string cardeal = "";
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                input = Console.ReadLine();
-                continput = 0;
+                string input = Console.ReadLine();
                 foreach (char separacao in input)
                 {
                     if (separacao != ' ')
@@ -209,33 +142,33 @@
                         {
                             short auxconversao1;
                             Int16.TryParse(separacao.ToString(), out auxconversao1);
-                            posx2 = auxconversao1;
+                            posx = auxconversao1;
                         }
                         if (continput == 2)
                         {
                             short auxconversao2;
                             Int16.TryParse(separacao.ToString(), out auxconversao2);
-                            posy2 = auxconversao2;
+                            posy = auxconversao2;
                         }
                         if (continput == 3)
                         {
-                            cardeal2 = Convert.ToString(separacao);
+                            cardeal = Convert.ToString(separacao);
                         }
                     }
                 }
-                if (posx2 > areax)
+                if (posx > areax)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Erro");
                     continue;
                 }
-                if (posy2 > areay)
+                if (posy > areay)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Erro");
                     continue;
                 }
-                if (cardeal2 != "N" && cardeal2 != "n" && cardeal2 != "S" && cardeal2 != "s" && cardeal2 != "L" && cardeal2 != "l" && cardeal2 != "O" && cardeal2 != "o" && cardeal2 == " " && cardeal2 == "")
+                if (cardeal != "N" && cardeal != "n" && cardeal != "S" && cardeal != "s" && cardeal != "L" && cardeal != "l" && cardeal != "O" && cardeal != "o" && cardeal == " " && cardeal == "")
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Write("Erro");
@@ -243,111 +176,48 @@
                 }
                 break;
             }
-            string frasecomando2 = "";
+            return (posx, posy, cardeal);
+        }
+
+        public static (int, int) InputArea()
+        {
+            int areax = 0, areay = 0;
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                frasecomando2 = Console.ReadLine();
-                string auxcar2 = "";
-                int verificarerro2 = 0;
-                //string[] conterro = new string[frasecomando2.Length];
-
-                foreach (char comando in frasecomando2)
+                int continput = 0; 
+                string input = "";
+                input = Console.ReadLine();
+                continput = 0;
+                areax = 0;
+                areay = 0;
+                foreach (char separacao in input)
                 {
-                    if (comando != ' ')
+                    if (separacao != ' ')
                     {
-                        if (comando == 'E' || comando == 'e')
+                        continput++;
+                        if (continput == 1)
                         {
-                            if (cardeal2 == "N" || cardeal2 == "n")
-                            {
-                                auxcar2 = "O";
-                            }
-                            else if (cardeal2 == "O" || cardeal2 == "o")
-                            {
-                                auxcar2 = "S";
-                            }
-                            else if (cardeal2 == "S" || cardeal2 == "s")
-                            {
-                                auxcar2 = "L";
-                            }
-                            else if (cardeal2 == "L" || cardeal2 == "l")
-                            {
-                                auxcar2 = "N";
-                            }
-                            cardeal2 = auxcar2;
+                            short auxconversao1;
+                            Int16.TryParse(separacao.ToString(), out auxconversao1);
+                            areax = auxconversao1;
                         }
-                        else if (comando == 'D' || comando == 'd')
+                        if (continput == 2)
                         {
-                            if (cardeal2 == "N" || cardeal2 == "n")
-                            {
-                                auxcar2 = "L";
-                            }
-                            else if (cardeal2 == "L" || cardeal2 == "l")
-                            {
-                                auxcar2 = "S";
-                            }
-                            else if (cardeal2 == "S" || cardeal2 == "s")
-                            {
-                                auxcar2 = "O";
-                            }
-                            else if (cardeal2 == "O" || cardeal2 == "O")
-                            {
-                                auxcar2 = "N";
-                            }
-                            cardeal2 = auxcar2;
-                        }
-                        if (comando == 'M' || comando == 'm')
-                        {
-                            if (cardeal2 == "N" || cardeal2 == "n")
-                            {
-                                posy2++;
-                            }
-                            else if (cardeal2 == "L" || cardeal2 == "l")
-                            {
-                                posx2++;
-                            }
-                            else if (cardeal2 == "S" || cardeal2 == "s")
-                            {
-                                posy2--;
-                            }
-                            else if (cardeal2 == "O" || cardeal2 == "O")
-                            {
-                                posx2--;
-                            }
-                        }
-                        else if (comando != 'M' && comando != 'm' && comando != 'D' && comando != 'd' && comando != 'E' && comando != 'e' && comando == ' ')
-                        {
-                            verificarerro2 = 1;
+                            short auxconversao2;
+                            Int16.TryParse(separacao.ToString(), out auxconversao2);
+                            areay = auxconversao2;
                         }
                     }
                 }
-                if (verificarerro2 == 1)
+                if (areay < 0 || areax < 0)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("Erro");
-                    continue;
-                }
-
-                if (posx2 > areax || posx2 < 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("Erro");
-                    continue;
-                }
-
-                if (posy2 > areay || posy2 < 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("Erro");
+                    Console.WriteLine("Erro");
                     continue;
                 }
                 break;
             }
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Clear();
-            Console.Write($"{posx} {posy} {cardeal}");
-            Console.Write($"\n{posx2} {posy2} {cardeal2}");
-            Console.ReadLine();
-        }
+            return (areax, areay);
+        }            
     }
 }
